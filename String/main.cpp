@@ -66,10 +66,10 @@ public:
 		cout << "MoveAssignment:\t" << this << endl;
 	}
 
-	//String& operator+=(const String& other)
-	//{
-	// return *this = *this + other;
-	//}
+	String& operator+=(const String& other)
+	{
+	 return *this = *this + other;
+	}
 
 	~String()
 	{
@@ -80,6 +80,7 @@ public:
 	}
 
 	//				Operators:
+
 	String& operator=(const String& other)
 	{
 		if (this == &other)return *this;
