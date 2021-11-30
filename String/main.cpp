@@ -1,8 +1,9 @@
 #include<iostream>
 using namespace std;
-using std::cin;
 using std::cout;
-using std::endl;;
+using std::endl;
+
+//String operator+(const String& left, const String& right);
 
 class String
 {
@@ -44,6 +45,32 @@ public:
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor:" << this << endl;
 	}
+
+	String(String&& other)
+	{
+		this->size = other.size;
+		this->str = other.str;//Копируем указатель на уже выделенную память, принадлежащую другому объекту.
+		other.str = nullptr; // Зануляем указатель в другом объекте, чтобы деструктор НЕ смог удалить память, которая ему принадлежит.
+		other.size = 0;
+		cout << "MoveConstructor: " << this << endl;
+	}
+
+	String& operator=(String&& other)
+	{
+		if (this == &other)return *this;
+		delete[] this->str;
+		this->size = other.size;
+		this->str = other.str;
+		other.str = nullptr;
+		other.size = 0;
+		cout << "MoveAssignment:\t" << this << endl;
+	}
+
+	//String& operator+=(const String& other)
+	//{
+	// return *this = *this + other;
+	//}
+
 	~String()
 	{
 		delete[] this->str;
@@ -100,6 +127,7 @@ ostream& operator<<(ostream& os, const String& obj)
 }
 
 //#define CONSTRUCTORS_CHECK
+//#define OPERATOR+CHECK
 
 void main()
 {
@@ -130,11 +158,26 @@ void main()
 	cout << a << endl;
 #endif // CONSTRUCTORS_CHECK
 
+#ifdef OPERATOR+CHECK
 	String str1 = "Hello";
 	String str2 = "World";
 	String str3 = str1 + str2;	//Неявно вызываем оператор +
+	cout << "\n-----------------------------------------------\n";
 	cout << str3 << endl;
-	cout << operator+(str1, str2) << endl;	//Явный вызов оператора +
-	str1 += str2;
+	//cout << operator+(str1, str2) << endl;	//Явный вызов оператора +
+
+	//str1 += str2;
+	//cout << str1 << endl;  
+#endif // OPERATOR+CHECK
+
+	String str1;
 	cout << str1 << endl;
+
+	String str2 = "Hello";
+	cout << str2 << endl;
+
+	String str3 = str2;
+	cout << str3 << endl;
+
+	
 }
